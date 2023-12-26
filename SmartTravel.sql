@@ -38,7 +38,7 @@ create table horaire(
     date_ date NOT NULL,
     heur_depart time NOT NULL,
     heur_arrivee time NOT NULL,
-    sieges-dispo int(10) NOT NULL,
+    sieges_dispo int(10) NOT NULL,
     constraint time_check check(heur_arrivee > heur_depart),
     foreign key (idRout) references routee(idRoute),
     foreign key (idBus) references bus(idBus)
