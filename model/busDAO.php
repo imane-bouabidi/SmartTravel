@@ -1,6 +1,6 @@
-
-
 <?php
+include_once 'model/config/connexion.php';
+include_once 'model/bus.php';
     class busDAO{
         private $pdo;
 
@@ -22,7 +22,7 @@
             $BusDATA = array();
             $AllBus = $stmt->fetchAll();
             foreach($AllBus as $bus){
-                $BusDATA[] = new Bus($bus['idBus'],$bus['NumBus'],$bus['immat'],$bus['idEntre'],$bus['capacity']);
+                $BusDATA[] = new Bus($bus['idBus'],$bus['Num_Bus'],$bus['immatricule'],$bus['idEntreprise'],$bus['capacite']);
             }
             return $BusDATA;
         }
