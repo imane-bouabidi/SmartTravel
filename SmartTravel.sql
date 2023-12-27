@@ -1,107 +1,127 @@
-create database if not exists smarttravel;
+-- Drop the database if it exists
+DROP DATABASE IF EXISTS smarttravel;
 
-use smarttravel;
-create table entreprise(
-    idEntreprise int(20) primary key AUTO_INCREMENT,
-    name varchar(50) NOT NULL,
-    short_name varchar(50) NOT NULL,
-    image varchar(50) NOT NULL
-);
-create table bus(
-    idBus int(20) primary key AUTO_INCREMENT,
-    Num_Bus int(20) NOT NULL,
-    immatricule int(20) NOT NULL,
-    idEntreprise int NOT NULL,
-    capacite int(20) NOT NULL,
-    foreign key (idEntreprise) references entreprise(idEntreprise)
-);
-create table ville(
-    idVille int(20) primary key AUTO_INCREMENT,
-    ville_name varchar(50) NOT NULL
+-- Create the database
+CREATE DATABASE IF NOT EXISTS smarttravel;
+
+-- Use the database
+USE smarttravel;
+
+-- Create the entreprise table
+CREATE TABLE entreprise (
+    idEntreprise INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    short_name VARCHAR(50) NOT NULL,
+    image VARCHAR(50) NOT NULL
 );
 
-create table routee(
-    idRout int(20) primary key AUTO_INCREMENT,
-    ville_departID int(30) NOT NULL,
-    ville_arriveeID int(30) NOT NULL,
-    duree time NOT NULL,
-    distance float(20) NOT NULL,
-    constraint route_ check(ville_departID != ville_arriveeID),
-    foreign key (ville_departID) references ville(idVille),
-    foreign key (ville_arriveeID) references ville(idVille)
+-- Create the bus table
+CREATE TABLE bus (
+    idBus INT PRIMARY KEY AUTO_INCREMENT,
+    Num_Bus INT NOT NULL,
+    immatricule INT NOT NULL,
+    idEntreprise INT NOT NULL,
+    capacite INT NOT NULL,
+    CONSTRAINT fk_bus_idEntreprise FOREIGN KEY (idEntreprise) REFERENCES entreprise(idEntreprise) ON DELETE CASCADE
 );
 
-create table horaire(
-    idHoraire int(20) primary key AUTO_INCREMENT,
-    idRoute int(20) NOT NULL,
-    idBus int not null,
-    date_ date NOT NULL,
-    heur_depart time NOT NULL,
-    heur_arrivee time NOT NULL,
-    sieges_dispo int(10) NOT NULL,
-    constraint time_check check(heur_arrivee > heur_depart),
-    foreign key (idRout) references routee(idRoute),
-    foreign key (idBus) references bus(idBus)
+-- Create the ville table
+CREATE TABLE ville (
+    idVille INT PRIMARY KEY AUTO_INCREMENT,
+    ville_name VARCHAR(50) NOT NULL
 );
 
+-- Create the routee table
+CREATE TABLE routee (
+    idRout INT PRIMARY KEY AUTO_INCREMENT,
+    ville_departID INT NOT NULL,
+    ville_arriveeID INT NOT NULL,
+    duree TIME NOT NULL,
+    distance FLOAT NOT NULL,
+    CONSTRAINT route_check CHECK(ville_departID != ville_arriveeID),
+    CONSTRAINT fk_routee_ville_depart FOREIGN KEY (ville_departID) REFERENCES ville(idVille) ON DELETE CASCADE,
+    CONSTRAINT fk_routee_ville_arrivee FOREIGN KEY (ville_arriveeID) REFERENCES ville(idVille) ON DELETE CASCADE
+);
 
-INSERT INTO ville (idVille, ville_name) VALUES
-    (0, 'Casablanca'),
-    (0, 'Rabat'),
-    (0, 'Marrakech'),
-    (0, 'Fes'),
-    (0, 'Tangier'),
-    (0, 'Agadir'),
-    (0, 'Meknes'),
-    (0, 'Oujda'),
-    (0, 'Kenitra'),
-    (0, 'Tetouan'),
-    (0, 'Safi'),
-    (0, 'El Jadida'),
-    (0, 'Beni Mellal'),
-    (0, 'Nador'),
-    (0, 'Taza'),
-    (0, 'Settat'),
-    (0, 'Khouribga'),
-    (0, 'Ouarzazate'),
-    (0, 'Essaouira'),
-    (0, 'Al Hoceima'),
-    (0, 'Larache'),
-    (0, 'Dakhla'),
-    (0, 'Khemisset'),
-    (0, 'Taroudant'),
-    (0, 'Errachidia'),
-    (0, 'Guelmim'),
-    (0, 'Tiznit'),
-    (0, 'Fquih Ben Salah'),
-    (0, 'Tifelt'),
-    (0, 'Tan-Tan'),
-    (0, 'Ouarzazate'),
-    (0, 'Berkane'),
-    (0, 'Taourirt'),
-    (0, 'Sidi Slimane'),
-    (0, 'Ouazzane'),
-    (0, 'Sidi Kacem'),
-    (0, 'Berrechid'),
-    (0, 'Témara'),
-    (0, 'Tinghir'),
-    (0, 'Chefchaouen'),
-    (0, 'Dcheira'),
-    (0, 'Guercif'),
-    (0, 'Midelt'),
-    (0, 'Azrou'),
-    (0, 'Skhirat'),
-    (0, 'Oulad Teima'),
-    (0, 'Sidi Yahia El Gharb'),
-    (0, 'Youssoufia'),
-    (0, 'Sidi Bennour'),
-    (0, 'Ahfir'),
-    (0, 'Mechra Bel Ks');
+-- Create the horaire table
+CREATE TABLE horaire (
+    idHoraire INT PRIMARY KEY AUTO_INCREMENT,
+    idRout INT NOT NULL,
+    idBus INT NOT NULL,
+    date_ DATE NOT NULL,
+    heur_depart TIME NOT NULL,
+    heur_arrivee TIME NOT NULL,
+    sieges_dispo INT NOT NULL,
+    CONSTRAINT time_check CHECK(heur_arrivee > heur_depart),
+    CONSTRAINT fk_horaire_routee FOREIGN KEY (idRout) REFERENCES routee(idRout) ON DELETE CASCADE,
+    CONSTRAINT fk_horaire_bus FOREIGN KEY (idBus) REFERENCES bus(idBus) ON DELETE CASCADE
+);
+
+-- Insert into ville table with unique idVille values
+INSERT INTO ville (ville_name) VALUES
+    ('Casablanca'),
+    ('Rabat'),
+    ('Marrakech'),
+    ('Fes'),
+    ('Tangier'),
+    ('Agadir'),
+    ('Meknes'),
+    ('Oujda'),
+    ('Kenitra'),
+    ('Tetouan'),
+    ('Safi'),
+    ('El Jadida'),
+    ('Beni Mellal'),
+    ('Nador'),
+    ('Taza'),
+    ('Settat'),
+    ('Khouribga'),
+    ('Ouarzazate'),
+    ('Essaouira'),
+    ('Al Hoceima'),
+    ('Larache'),
+    ('Dakhla'),
+    ('Khemisset'),
+    ('Taroudant'),
+    ('Errachidia'),
+    ('Guelmim'),
+    ('Tiznit'),
+    ('Fquih Ben Salah'),
+    ('Tifelt'),
+    ('Tan-Tan'),
+    ('Ouarzazate'),
+    ('Berkane'),
+    ('Taourirt'),
+    ('Sidi Slimane'),
+    ('Ouazzane'),
+    ('Sidi Kacem'),
+    ('Berrechid'),
+    ('Témara'),
+    ('Tinghir'),
+    ('Chefchaouen'),
+    ('Dcheira'),
+    ('Guercif'),
+    ('Midelt'),
+    ('Azrou'),
+    ('Skhirat'),
+    ('Oulad Teima'),
+    ('Sidi Yahia El Gharb'),
+    ('Youssoufia'),
+    ('Sidi Bennour'),
+    ('Ahfir'),
+    ('Mechra Bel Ks');
+
+-- Insert into entreprise table
+INSERT INTO entreprise (name, image, short_name) VALUES 
+('CTM', 'ctm.jpg', 'CTM'),
+('TajVoyage', 'taj.jpg', 'Taj'),
+('Bismi Allah Salama', 'bismilah.jpg', 'BAS'),
+('SAT First', 'SAT_First.jpg', 'SAT'),
+('Ghazala', 'ghazala.jpg', 'Ghazala');
 
 
-INSERT INTO entreprise (idEntreprise, name, image, short_name) VALUES 
-(1, 'CTM', 'ctm.jpg', 'CTM'),
-(2, 'TajVoyage', 'taj.jpg', 'Taj'),
-(3, 'Bismi Allah Salama', 'bismilah.jpg', 'BAS'),
-(4, 'SAT First', 'SAT_First.jpg', 'SAT'),
-(5, 'Ghazala', 'ghazala.jpg', 'Ghazala');
+INSERT INTO `bus` (`idBus`, `Num_Bus`, `immatricule`, `idEntreprise`, `capacite`) VALUES 
+(NULL, '12', '124578', '2', '50'), 
+(NULL, '11', '457996', '2', '60'), 
+(NULL, '8', '857496', '1', '70'), 
+(NULL, '7', '584213', '4', '75');
