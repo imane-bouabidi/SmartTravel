@@ -63,7 +63,6 @@ class="container rounded-5 row g-3 needs-validation p-4 mt-3 border border-black
 
 </body>
 </html>
-
 <?php
 $content = ob_get_clean();
 include_once 'layout.php';
