@@ -2,8 +2,12 @@
 
 include "controller/busController.php" ;
 include "controller/horaireController.php" ;
+include "controller/routeController.php" ;
+include "controller/homeController.php" ;
 $contoller_Bus = new BusController() ;
 $contoller_horaire = new HoraireController() ;
+$contoller_route = new RouteController() ;
+$contoller_home = new HomeController() ;
 
 
 // $contoller_horaire->getAllHoraires();
@@ -12,6 +16,12 @@ $contoller_horaire = new HoraireController() ;
 if(isset($_GET['action'])) {
     $action = $_GET['action'] ;
     switch($action) {
+        case 'home':
+            $contoller_home->showHome();
+            break;
+        case 'buses':
+            $contoller_Bus->getAllBus();
+            break;
         case 'add_bus':
             $contoller_Bus->showAddBus();
             break;
@@ -30,10 +40,28 @@ if(isset($_GET['action'])) {
         case 'horaires':
             $contoller_horaire->getAllHoraires();
             break;
+        case 'routes':
+            $contoller_route->getAllRoutes();
+            break;
+        case 'add_route':
+            $contoller_route->ShowAddRoute();
+            break;
+        case 'addRoute':
+            $contoller_route->addRoutes();
+            break;
+        case 'updateroute':
+            $contoller_route->updateForm();
+            break;
+        case 'updateRouteSubmit':
+            $contoller_route->updateRoute();
+            break;
+        case 'delete_route':
+            $contoller_route->delete_Route();
+            break;
 
 
     }
 }else{
-    $contoller_Bus->getAllBus();
+    $contoller_home->showHome();
 }
 ?>
