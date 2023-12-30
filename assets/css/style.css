@@ -1,0 +1,25 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: bisque;
+}
+
+
+#header{
+
+    background-image: url(../imgs/5685020.jpg);
+    background-size: cover;
+
+} 
+#btn{
+    background-color:rgb(255, 105, 24) ;
+}
+
+#booking{
+    background-color: rgb(255, 105, 24)
+}
