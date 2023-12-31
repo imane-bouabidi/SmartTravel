@@ -58,6 +58,21 @@ if(isset($_GET['action'])) {
         case 'delete_route':
             $contoller_route->delete_Route();
             break;
+        case 'ShowAddHoraire':
+            $contoller_horaire->ShowAddHoraire();
+            break;
+        case 'addHoraire':
+            $contoller_horaire->addHoraire();
+            break;
+        case 'showUpdateHoraire':
+            $contoller_horaire->updateForm();
+            break;
+        case 'UpdateHoraire':
+            $contoller_horaire->updateHoraire();
+            break;
+        case 'deleteHoraire':
+            $contoller_horaire->delete_Horaire();
+            break;
 
 
     }
