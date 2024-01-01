@@ -73,6 +73,9 @@ if(isset($_GET['action'])) {
         case 'deleteHoraire':
             $contoller_horaire->delete_Horaire();
             break;
+        case 'search':
+            $contoller_horaire->searchHoraire();
+            break;
 
 
     }

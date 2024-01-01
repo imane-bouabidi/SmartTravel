@@ -35,6 +35,17 @@ include_once 'model/horaire.php';
                 $HoraireDATA = new Horaire($horaire['idHoraire'],$horaire['idRout'],$horaire['idBus'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo']);
             return $HoraireDATA;
         }
+        public function searchHoraires($vDepart,$vArrivee,$date,$sieges){
+            $selectAll = "SELECT * FROM horaire inner join routee r on horaire.idRout=r.idRout where  r.ville_departID = '$vDepart' and r.ville_arriveeID = '$vArrivee'  and date_ >= '$date' AND sieges_dispo >= '$sieges' GROUP by horaire.idHoraire;";
+            $stmt = $this->pdo->prepare($selectAll);
+            $stmt->execute();
+            $HoraireDATA = array();
+            $AllHoraire = $stmt->fetchAll();
+            foreach($AllHoraire as $horaire){
+                $HoraireDATA[] = new Horaire($horaire['idHoraire'],$horaire['idRout'],$horaire['idBus'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo']);
+            }
+            return $HoraireDATA;
+        }
         
         
         public function UpdateHoraire($idHoraire,$idRoute, $idBus, $date_, $heure_depart, $heure_arrivee, $sieges_dispo){

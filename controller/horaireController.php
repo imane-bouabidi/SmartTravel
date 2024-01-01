@@ -54,6 +54,18 @@ class HoraireController{
         $horaireDATA = $horaire->UpdateHoraire($id,$idRout,$idBus,$date_,$heur_depart,$heur_arrivee,$sieges_dispo);
         include 'view/updateRoute.php';
     }
+    function searchHoraire(){
+        $vDepart = $_POST["vDepart"] ; 
+        $vArrivee = $_POST["vArrivee"] ; 
+        $date = $_POST["date"] ; 
+        $NumCustom = $_POST["NumCustom"] ; 
+        $horaire = new horaireDAO();
+        $horaireDATA = $horaire->searchHoraires($vDepart,$vArrivee,$date,$NumCustom);
+
+        $ville = new VilleDAO();
+        $villesDATA = $ville->getAllVilles();
+        include 'view/homeUser.php';
+    }
 
     function delete_Horaire(){
         $id = $_GET['id'];

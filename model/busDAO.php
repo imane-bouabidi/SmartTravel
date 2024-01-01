@@ -24,7 +24,7 @@ include_once 'model/entreprise.php';
             $BusDATA = array();
             $AllBus = $stmt->fetchAll();
             foreach($AllBus as $bus){
-                
+
                 $BusDATA[] = new Bus($bus['idBus'],$bus['Num_Bus'],$bus['immatricule'],$bus['idEntreprise'],$bus['capacite']);
             }
             return $BusDATA;

@@ -14,13 +14,13 @@ width="650">
 
 
 <div class="d-flex justify-content-center align-items-center">
-<form method=""
+<form action="index.php?action=search" method="post"
 id="booking" 
 class="container rounded-5 row g-3 needs-validation p-4 mt-3 border border-black" novalidate>
   <div class="col-md-3">
     <div class="form-outline" data-mdb-input-init>
       <label for="validationCustom02" class="form-label">Departure city</label>
-      <select  class="form-control" data-mdb-select-init data-mdb-filter="true">
+      <select name="vDepart" class="form-control" data-mdb-select-init data-mdb-filter="true">
         <?php foreach($villesDATA as $ville) { ?>    
           <option value="<?= $ville->getIdVille(); ?>">
               <?php echo $ville->getVille_name(); ?>
@@ -32,7 +32,7 @@ class="container rounded-5 row g-3 needs-validation p-4 mt-3 border border-black
   <div class="col-md-3">
     <div class="form-outline" data-mdb-input-init>
       <label for="validationCustom02" class="form-label">Destination city</label>
-      <select  class="form-control" data-mdb-select-init data-mdb-filter="true">
+      <select name="vArrivee" class="form-control" data-mdb-select-init data-mdb-filter="true">
         <?php foreach($villesDATA as $ville) { ?>    
           <option value="<?= $ville->getIdVille(); ?>">
               <?php echo $ville->getVille_name(); ?>
@@ -44,13 +44,13 @@ class="container rounded-5 row g-3 needs-validation p-4 mt-3 border border-black
   <div class="col-md-3">
     <div class="form-outline" data-mdb-input-init>
     <label for="Date" class="form-label">Date</label>
-    <input type="date" class="form-control" id="validationCustom01" value="Mark" required>
+    <input name="date" type="date" class="form-control" id="validationCustom01" value="Mark" required>
   </div>
 </div>
 <div class="col-md-3">
   <div class="form-outline" data-mdb-input-init>
     <label for="validationNumCustom" class="form-label">Number Of Passengers</label>
-    <input type="number" class="form-control" name="validationNumCustom" id="validationCustom01" value="1" required>
+    <input name="NumCustom" type="number" class="form-control" id="validationCustom01" value="1" required>
       </div>
   </div>
   <div class="d-flex justify-content-center">
@@ -58,8 +58,23 @@ class="container rounded-5 row g-3 needs-validation p-4 mt-3 border border-black
   </div>
 </form>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<?php
+  if(isset($horaireDATA) && !empty($horaireDATA)){
+    echo "<h2 class='text-2xl font-bold mb-4'>Résultats de la recherche :</h2>";
+                echo "<ul>";
+                
+                foreach ($horaireDATA as $Horaire) {
+                    echo "<li class='mb-2'>";
+                    echo "<span class='font-bold'>ID Bus:</span> " . $Horaire->getIdBus() . "<br>";
+                    echo "<span class='font-bold'>Heure de départ:</span> " .  $Horaire->getHeureDepart() . "<br>";
+                    echo "<span class='font-bold'>Heure d'arrivee:</span> " .  $Horaire->getHeureArrivee() . "<br>";
+                    echo "</li>";
+                }
 
+                echo "</ul>";
+  }
+?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </body>
 </html>
