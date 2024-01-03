@@ -64,12 +64,16 @@ include_once 'model/searchClass.php';
             $stmt = $this->pdo->prepare($selectAll);
             $stmt->execute();
             $HoraireDATA = array();
+            $villesDATA = array();
             $AllHoraire = $stmt->fetchAll();
             foreach($AllHoraire as $horaire){
                 $HoraireDATA[] = new Search($horaire['idHoraire'],$horaire['ville_depart'],$horaire['ville_arrivee'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo'],$horaire['price'],$horaire['company_name'],$horaire['company_image'],$horaire['duree']);
+                $entreprisesDATA[] = new Entreprise(0,$horaire['company_name'],"","");
             }
-            return $HoraireDATA;
+            return ['HoraireDATA' => $HoraireDATA, 'entreprisesDATA' => $entreprisesDATA];
         }
+
+
         
         
         public function UpdateHoraire($idHoraire,$idRoute, $idBus, $date_, $heure_depart, $heure_arrivee, $sieges_dispo){

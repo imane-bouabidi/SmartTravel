@@ -14,61 +14,58 @@ width="650">
 
 
 <div class="d-flex justify-content-center align-items-center">
-  <form action="index.php?action=search" method="post" id="booking" 
-    class="ajax-search-form container rounded-5 row g-3 needs-validation p-4 mt-3 border border-black" novalidate>
-      <div class="col-md-3">
-        <div class="form-outline" data-mdb-input-init>
-          <label for="validationCustom02" class="form-label">Departure city</label>
-          <select name="vDepart" class="form-control" data-mdb-select-init data-mdb-filter="true">
-            <?php foreach($villesDATA as $ville) { ?>    
-              <option value="<?= $ville->getIdVille(); ?>">
-                  <?php echo $ville->getVille_name(); ?>
-              </option>
-            <?php } ?>
-          </select> 
-          </div>
+<form action="index.php?action=search" method="post" id="booking" 
+class="ajax-search-form container rounded-5 row g-3 needs-validation p-4 mt-3 border border-black" novalidate>
+  <div class="col-md-3">
+    <div class="form-outline" data-mdb-input-init>
+      <label for="validationCustom02" class="form-label">Departure city</label>
+      <select name="vDepart" class="form-control" data-mdb-select-init data-mdb-filter="true">
+        <?php foreach($villesDATA as $ville) { ?>    
+          <option value="<?= $ville->getIdVille(); ?>">
+              <?php echo $ville->getVille_name(); ?>
+          </option>
+        <?php } ?>
+      </select> 
       </div>
-      <div class="col-md-3">
-        <div class="form-outline" data-mdb-input-init>
-          <label for="validationCustom02" class="form-label">Destination city</label>
-          <select name="vArrivee" class="form-control" data-mdb-select-init data-mdb-filter="true">
-            <?php foreach($villesDATA as $ville) { ?>    
-              <option value="<?= $ville->getIdVille(); ?>">
-                  <?php echo $ville->getVille_name(); ?>
-              </option>
-            <?php } ?>
-          </select> 
-          </div>
+  </div>
+  <div class="col-md-3">
+    <div class="form-outline" data-mdb-input-init>
+      <label for="validationCustom02" class="form-label">Destination city</label>
+      <select name="vArrivee" class="form-control" data-mdb-select-init data-mdb-filter="true">
+        <?php foreach($villesDATA as $ville) { ?>    
+          <option value="<?= $ville->getIdVille(); ?>">
+              <?php echo $ville->getVille_name(); ?>
+          </option>
+        <?php } ?>
+      </select> 
       </div>
-      <div class="col-md-3">
-        <div class="form-outline" data-mdb-input-init>
-        <label for="Date" class="form-label">Date</label>
-        <input name="date" type="date" class="form-control" id="validationCustom01" value="Mark" required>
+  </div>
+  <div class="col-md-3">
+    <div class="form-outline" data-mdb-input-init>
+    <label for="Date" class="form-label">Date</label>
+    <input name="date" type="date" class="form-control" id="validationCustom01" value="Mark" required>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="form-outline" data-mdb-input-init>
+    <label for="validationNumCustom" class="form-label">Number Of Passengers</label>
+    <input name="NumCustom" type="number" class="form-control" id="validationCustom01" value="1" required>
       </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-outline" data-mdb-input-init>
-        <label for="validationNumCustom" class="form-label">Number Of Passengers</label>
-        <input name="NumCustom" type="number" class="form-control" id="validationCustom01" value="1" required>
-          </div>
-      </div>
-      <div class="d-flex justify-content-center">
-      <button type="submit" class="btn btn-outline-light btn-rounded mt-3" data-mdb-ripple-init  data-mdb-ripple-color="dark">Search</button>
-      </div>
-  </form>
+  </div>
+  <div class="d-flex justify-content-center">
+  <button type="submit" class="btn btn-outline-light btn-rounded mt-3" data-mdb-ripple-init  data-mdb-ripple-color="dark">Search</button>
+  </div>
+</form>
 </div>
 <div id="searchResults" class="mt-6">
-
-    <?php if(isset($horaireDATA) && !empty($horaireDATA)) : ?>
-
-      <div class="d-flex flex-column p-3 border rounded-3 col-3 side-bar">
+          <div class="d-flex flex-column p-3 border rounded-3 col-3 side-bar">
             <div>
                 <p class="h5">Société</p>
                 <ul class="d-flex flex-column" id="company_filter" name="company_filter">
-                    <?php foreach($entreprisesDATA as $key => $comName) { ?>  
+                    <?php foreach($villesDATA as $key => $ville) { ?>  
                         <li class="mt-3">
-                            <input type="checkbox" class="form-check-input company-name" data-company="<?= $comName->getIdEntreprise();?>" id="<?= "company-" . ($key + 1) ?>">
-                            <label class="form-check-label" for="<?= "company-" . ($key + 1) ?>"><?= $comName->getName(); ?></label>
+                            <input type="checkbox" class="form-check-input company-name" data-company="<?= $ville->getVille_name();?>" id="<?= "company-" . ($key + 1) ?>">
+                            <label class="form-check-label" for="<?= "company-" . ($key + 1) ?>"><?= $ville->getVille_name(); ?></label>
                         </li>
                         <?php } ?>
                 </ul>
@@ -98,6 +95,7 @@ width="650">
                 </ul>
             </div>
         </div>
+    <?php if(isset($horaireDATA) && !empty($horaireDATA)) : ?>
       <h2 class=" w-80 mx-auto text-2xl font-bold mb-4">Bus Disponibles :</h2>
         <div class="w-70 mx-auto">
           <?php foreach ($horaireDATA as $Horaire) : ?>
@@ -150,6 +148,11 @@ width="650">
     <?php endif; ?>
 </div>
 
+<!-- Filtrage : -->
+
+<div id="searchResults" class="mt-6">
+   <!-- Les résultats filtrés seront affichés ici -->
+</div>
 
 
 
@@ -164,7 +167,3 @@ include_once 'layout.php';
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-<script>
-  
-</script>
