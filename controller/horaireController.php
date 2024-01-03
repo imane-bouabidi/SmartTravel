@@ -61,7 +61,6 @@ class HoraireController{
         $NumCustom = $_POST["NumCustom"] ; 
         $horaire = new horaireDAO();
         $horaireDATA = $horaire->searchHoraires($vDepart,$vArrivee,$date,$NumCustom);
-
         $ville = new VilleDAO();
         $villesDATA = $ville->getAllVilles();
         include 'view/homeUser.php';

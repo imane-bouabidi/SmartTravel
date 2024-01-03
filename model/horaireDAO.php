@@ -45,6 +45,7 @@ include_once 'model/searchClass.php';
             horaire.heur_depart,
             horaire.heur_arrivee,
             horaire.sieges_dispo,
+            horaire.price,
             entreprise.name AS company_name,
             entreprise.image AS company_image,
             routee.duree
@@ -65,7 +66,7 @@ include_once 'model/searchClass.php';
             $HoraireDATA = array();
             $AllHoraire = $stmt->fetchAll();
             foreach($AllHoraire as $horaire){
-                $HoraireDATA[] = new Search($horaire['idHoraire'],$horaire['ville_depart'],$horaire['ville_arrivee'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo'],$horaire['company_name'],$horaire['company_image'],$horaire['duree']);
+                $HoraireDATA[] = new Search($horaire['idHoraire'],$horaire['ville_depart'],$horaire['ville_arrivee'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo'],$horaire['price'],$horaire['company_name'],$horaire['company_image'],$horaire['duree']);
             }
             return $HoraireDATA;
         }

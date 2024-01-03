@@ -8,11 +8,12 @@ class Search {
     private $heure_depart;
     private $heure_arrivee;
     private $sieges_dispo;
+    private $price;
     private $company_name;
     private $company_image;
     private $duree;
 
-    public function __construct($idHoraire, $ville_depart, $ville_arrivee, $date_, $heure_depart, $heure_arrivee, $sieges_dispo, $company_name, $company_image, $duree) {
+    public function __construct($idHoraire, $ville_depart, $ville_arrivee, $date_, $heure_depart, $heure_arrivee, $sieges_dispo,$price, $company_name, $company_image, $duree) {
         $this->idHoraire = $idHoraire;
         $this->ville_depart = $ville_depart;
         $this->ville_arrivee = $ville_arrivee;
@@ -20,6 +21,7 @@ class Search {
         $this->heure_depart = $heure_depart;
         $this->heure_arrivee = $heure_arrivee;
         $this->sieges_dispo = $sieges_dispo;
+        $this->price = $price;
         $this->company_name = $company_name;
         $this->company_image = $company_image;
         $this->duree = $duree;
@@ -64,6 +66,14 @@ class Search {
 
     public function getDuree() {
         return $this->duree;
+    }
+
+    /**
+     * Get the value of price
+     */ 
+    public function getPrice()
+    {
+        return $this->price;
     }
 }
 
