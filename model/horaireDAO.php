@@ -74,7 +74,7 @@ include_once 'model/searchClass.php';
             }
         
             // Groupez par ID pour éviter les doublons
-            $selectQuery .= " GROUP BY horaire.idHoraire";
+            // $selectQuery .= " GROUP BY horaire.idHoraire";
         
             // Préparez la requête
             $stmt = $this->pdo->prepare($selectQuery);

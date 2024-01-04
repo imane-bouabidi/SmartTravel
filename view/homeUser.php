@@ -16,7 +16,7 @@ ob_start();
                 <label for="validationCustom02" class="form-label">Departure city</label>
                 <select name="vDepart" class="form-control" data-mdb-select-init data-mdb-filter="true">
                     <?php foreach($villesDATA as $ville) { ?>
-                    <option value="<?= $ville->getIdVille(); ?>">
+                    <option value="<?= $ville->getIdVille(); ?>" <?= ($ville->getIdVille() == $_POST["vDepart"]) ? 'selected' : ''; ?>>
                         <?php echo $ville->getVille_name(); ?>
                     </option>
                     <?php } ?>
@@ -28,7 +28,7 @@ ob_start();
                 <label for="validationCustom02" class="form-label">Destination city</label>
                 <select name="vArrivee" class="form-control" data-mdb-select-init data-mdb-filter="true">
                     <?php foreach($villesDATA as $ville) { ?>
-                    <option value="<?= $ville->getIdVille(); ?>">
+                    <option value="<?= $ville->getIdVille(); ?>" <?= ($ville->getIdVille() == $_POST["vArrivee"]) ? 'selected' : ''; ?>>
                         <?php echo $ville->getVille_name(); ?>
                     </option>
                     <?php } ?>
@@ -38,13 +38,13 @@ ob_start();
         <div class="col-md-3">
             <div class="form-outline" data-mdb-input-init>
                 <label for="Date" class="form-label">Date</label>
-                <input name="date" type="date" class="form-control" id="validationCustom01" value="Mark" required>
+                <input name="date" type="date" class="form-control" id="validationCustom01" value="<?= $_POST["date"] ?? ''; ?>" required>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-outline" data-mdb-input-init>
                 <label for="validationNumCustom" class="form-label">Number Of Passengers</label>
-                <input name="NumCustom" type="number" class="form-control" id="validationCustom02" value="1" required>
+                <input name="NumCustom" type="number" class="form-control" id="validationCustom02" value="<?= $_POST["NumCustom"] ?? 1; ?>" required>
             </div>
         </div>
         <div class="d-flex justify-content-center">
@@ -295,6 +295,10 @@ function updateResults(minPrice, maxPrice, selectedCompanies) {
             maxPrice: maxPrice,
             selectedCompanies: selectedCompanies,
             // Ajoutez d'autres valeurs de filtre ici
+            vDepart: $('#vDepart').val(),
+            vArrivee: $('#vArrivee').val(),
+            date: $('#date').val(),
+            NumCustom: $('#NumCustom').val()
         },
         success: function(response) {
             // Mettez à jour la section des résultats avec les nouveaux résultats
@@ -305,6 +309,5 @@ function updateResults(minPrice, maxPrice, selectedCompanies) {
         }
     });
 }
-
 
 </script>

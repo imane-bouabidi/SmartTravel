@@ -53,24 +53,56 @@ class HoraireController{
         $horaireDATA = $horaire->UpdateHoraire($id,$idRout,$idBus,$date_,$heur_depart,$heur_arrivee,$sieges_dispo);
         include 'view/updateRoute.php';
     }
-    function searchHoraire(){
-        $vDepart = $_POST["vDepart"] ; 
-        $vArrivee = $_POST["vArrivee"] ; 
-        $date = $_POST["date"] ; 
-        $NumCustom = $_POST["NumCustom"] ; 
+    // function searchHoraire(){
+    //     $vDepart = $_POST["vDepart"] ; 
+    //     $vArrivee = $_POST["vArrivee"] ; 
+    //     $date = $_POST["date"] ; 
+    //     $NumCustom = $_POST["NumCustom"] ; 
 
+    //     $minPrice = isset($_POST["minPrice"]) ? $_POST["minPrice"] : null;
+    //     $maxPrice = isset($_POST["maxPrice"]) ? $_POST["maxPrice"] : null;
+    //     $selectedCompanies = isset($_POST["selectedCompanies"]) ? $_POST["selectedCompanies"] : array();
+
+    //     $ville = new VilleDAO();
+    //     $villesDATA = $ville->getAllVilles();
+    //     $horaire = new horaireDAO();
+    //     $HorairesDATA = $horaire->searchHoraires($vDepart, $vArrivee, $date, $NumCustom, $minPrice, $maxPrice,$selectedCompanies);
+    //     $horaireDATA = $HorairesDATA['HoraireDATA'];
+    //     $entreprisesDATA = $HorairesDATA['entreprisesDATA'];
+    //     include 'view/homeUser.php';
+    // }
+
+
+    function searchHoraire(){
+        // session_start(); 
+    
+        // Récupérez les valeurs des filtres depuis la session s'ils existent
+        $vDepart = isset($_SESSION["vDepart"]) ? $_SESSION["vDepart"] : null;
+        $vArrivee = isset($_SESSION["vArrivee"]) ? $_SESSION["vArrivee"] : null;
+        $date = isset($_SESSION["date"]) ? $_SESSION["date"] : null;
+        $NumCustom = isset($_SESSION["NumCustom"]) ? $_SESSION["NumCustom"] : null;
+    
+        // Stockez les valeurs des filtres dans la session si elles existent dans le POST
+        if (isset($_POST["vDepart"])) $_SESSION["vDepart"] = $_POST["vDepart"];
+        if (isset($_POST["vArrivee"])) $_SESSION["vArrivee"] = $_POST["vArrivee"];
+        if (isset($_POST["date"])) $_SESSION["date"] = $_POST["date"];
+        if (isset($_POST["NumCustom"])) $_SESSION["NumCustom"] = $_POST["NumCustom"];
+    
         $minPrice = isset($_POST["minPrice"]) ? $_POST["minPrice"] : null;
         $maxPrice = isset($_POST["maxPrice"]) ? $_POST["maxPrice"] : null;
         $selectedCompanies = isset($_POST["selectedCompanies"]) ? $_POST["selectedCompanies"] : array();
-
+    
         $ville = new VilleDAO();
         $villesDATA = $ville->getAllVilles();
         $horaire = new horaireDAO();
-        $HorairesDATA = $horaire->searchHoraires($vDepart, $vArrivee, $date, $NumCustom, $minPrice, $maxPrice,$selectedCompanies);
+    
+        $HorairesDATA = $horaire->searchHoraires($vDepart, $vArrivee, $date, $NumCustom, $minPrice, $maxPrice, $selectedCompanies);
         $horaireDATA = $HorairesDATA['HoraireDATA'];
         $entreprisesDATA = $HorairesDATA['entreprisesDATA'];
+    
         include 'view/homeUser.php';
     }
+    
 
     function delete_Horaire(){
         $id = $_GET['id'];
