@@ -8,6 +8,7 @@ $contoller_Bus = new BusController() ;
 $contoller_horaire = new HoraireController() ;
 $contoller_route = new RouteController() ;
 $contoller_home = new HomeController() ;
+session_start();
 
 
 // $contoller_horaire->getAllHoraires();

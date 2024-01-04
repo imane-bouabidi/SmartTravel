@@ -10,7 +10,7 @@ ob_start();
 
 <div class="d-flex justify-content-center align-items-center">
     <form action="index.php?action=search" method="post" id="booking"
-        class="ajax-search-form container rounded-5 row g-3 needs-validation p-4 mt-3 border border-black" novalidate>
+        class="ajax-search-form container rounded-5 row g-3 needs-validation p-4 mt-3 border border-black">
         <div class="col-md-3">
             <div class="form-outline" data-mdb-input-init>
                 <label for="validationCustom02" class="form-label">Departure city</label>
@@ -44,7 +44,7 @@ ob_start();
         <div class="col-md-3">
             <div class="form-outline" data-mdb-input-init>
                 <label for="validationNumCustom" class="form-label">Number Of Passengers</label>
-                <input name="NumCustom" type="number" class="form-control" id="validationCustom01" value="1" required>
+                <input name="NumCustom" type="number" class="form-control" id="validationCustom02" value="1" required>
             </div>
         </div>
         <div class="d-flex justify-content-center">
@@ -73,14 +73,15 @@ ob_start();
             </div>
             <div class="mt-5">
                 <p class="h5">Prix par personne</p>
-                <input type="range" class="form-range" min="0" max="50" value="0" name="" id="prixRangeMin">
-                <span id="rangeValueMin">Min: 0.00DH</span>
-                <input type="range" class="form-range" min="0" max="50" value="50" name="" id="prixRangeMax">
-                <span id="rangeValueMax">Max: 50.00DH</span>
+                <label for="minPrice">Prix minimum:</label>
+                <input type="number" name="minPrice" id="minPrice" />
+
+                <label for="maxPrice">Prix maximum:</label>
+                <input type="number" name="maxPrice" id="maxPrice" />
             </div>
             <div class="mt-5">
                 <p class="h5">Heure de départ</p>
-                <ul class="d-flex flex-column" id="company_filter" name="company_filter">
+                <ul class="d-flex flex-column" id="time_filter" name="time_filter">
                     <li class="mt-3">
                         <input type="checkbox" class="form-check-input time" name="" id="matin">
                         <label class="form-check-label" for="matin">Matin (0h - 12h)</label>
@@ -267,5 +268,43 @@ include_once 'layout.php';
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
+// Supposons que vous utilisez jQuery pour simplifier le code
+$('#minPrice, #maxPrice, .company-name').change(function() {
+    // Récupérez les valeurs des filtres
+    var minPrice = $('#minPrice').val();
+    var maxPrice = $('#maxPrice').val();
+    
+    // Récupérez les entreprises sélectionnées
+    var selectedCompanies = [];
+    $('.company-name:checked').each(function() {
+        selectedCompanies.push($(this).val());
+    });
+
+    // Appelez une fonction AJAX pour mettre à jour les résultats avec les filtres
+    updateResults(minPrice, maxPrice, selectedCompanies);
+});
+
+// Fonction AJAX pour mettre à jour les résultats avec les filtres
+function updateResults(minPrice, maxPrice, selectedCompanies) {
+    // Effectuez une requête AJAX avec les filtres
+    $.ajax({
+        type: 'POST',
+        url: 'index.php?action=search', // Changez ceci avec le chemin de votre script de recherche
+        data: {
+            minPrice: minPrice,
+            maxPrice: maxPrice,
+            selectedCompanies: selectedCompanies,
+            // Ajoutez d'autres valeurs de filtre ici
+        },
+        success: function(response) {
+            // Mettez à jour la section des résultats avec les nouveaux résultats
+            $('#searchResults').html(response);
+        },
+        error: function(error) {
+            console.error('Erreur AJAX: ', error);
+        }
+    });
+}
+
 
 </script>

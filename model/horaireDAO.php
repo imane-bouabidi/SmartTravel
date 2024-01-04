@@ -36,33 +36,68 @@ include_once 'model/searchClass.php';
                 $HoraireDATA = new Horaire($horaire['idHoraire'],$horaire['idRout'],$horaire['idBus'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo']);
             return $HoraireDATA;
         }
-        public function searchHoraires($vDepart,$vArrivee,$date,$sieges){
-            $selectAll = "SELECT 
-            horaire.idHoraire,
-            ville.ville_name AS ville_depart,
-            ville_arrivee.ville_name AS ville_arrivee,
-            horaire.date_,
-            horaire.heur_depart,
-            horaire.heur_arrivee,
-            horaire.sieges_dispo,
-            horaire.price,
-            entreprise.name AS company_name,
-            entreprise.image AS company_image,
-            routee.duree
-        FROM horaire 
-        INNER JOIN routee ON horaire.idRout = routee.idRout 
-        INNER JOIN ville ON routee.ville_departID = ville.idVille
-        INNER JOIN ville AS ville_arrivee ON routee.ville_arriveeID = ville_arrivee.idVille
-        INNER JOIN bus ON horaire.idBus = bus.idBus
-        INNER JOIN entreprise ON bus.idEntreprise = entreprise.idEntreprise
-        WHERE routee.ville_departID = '$vDepart' 
-            AND routee.ville_arriveeID = '$vArrivee' 
-            AND horaire.date_ >= '$date' 
-            AND horaire.sieges_dispo >= '$sieges'
-        GROUP BY horaire.idHoraire;
-        ";
-            $stmt = $this->pdo->prepare($selectAll);
+        public function searchHoraires($vDepart, $vArrivee, $date, $sieges, $minPrice, $maxPrice,$selectedCompanies){
+            // Construisez la requête SQL en fonction des filtres fournis
+            $selectQuery = "SELECT 
+                horaire.idHoraire,
+                ville.ville_name AS ville_depart,
+                ville_arrivee.ville_name AS ville_arrivee,
+                horaire.date_,
+                horaire.heur_depart,
+                horaire.heur_arrivee,
+                horaire.sieges_dispo,
+                horaire.price,
+                entreprise.name AS company_name,
+                entreprise.image AS company_image,
+                routee.duree
+            FROM horaire 
+            INNER JOIN routee ON horaire.idRout = routee.idRout 
+            INNER JOIN ville ON routee.ville_departID = ville.idVille
+            INNER JOIN ville AS ville_arrivee ON routee.ville_arriveeID = ville_arrivee.idVille
+            INNER JOIN bus ON horaire.idBus = bus.idBus
+            INNER JOIN entreprise ON bus.idEntreprise = entreprise.idEntreprise
+            WHERE routee.ville_departID = :vDepart
+                AND routee.ville_arriveeID = :vArrivee
+                AND horaire.date_ >= :date
+                AND horaire.sieges_dispo >= :sieges";
+        
+            // Ajoutez les conditions des filtres optionnels
+            if (!empty($selectedCompanies)) {
+                $selectQuery .= " AND entreprise.idEntreprise IN (" . implode(",", $selectedCompanies) . ")";
+        }
+            if (!empty($minPrice)) {
+                $selectQuery .= " AND horaire.price >= :minPrice";
+            }
+        
+            if (!empty($maxPrice)) {
+                $selectQuery .= " AND horaire.price <= :maxPrice";
+            }
+        
+            // Groupez par ID pour éviter les doublons
+            $selectQuery .= " GROUP BY horaire.idHoraire";
+        
+            // Préparez la requête
+            $stmt = $this->pdo->prepare($selectQuery);
+        
+            // Liez les paramètres
+            $stmt->bindParam(':vDepart', $vDepart);
+            $stmt->bindParam(':vArrivee', $vArrivee);
+            $stmt->bindParam(':date', $date);
+            $stmt->bindParam(':sieges', $sieges);
+        
+            // Liez les paramètres des filtres optionnels
+            if (!empty($minPrice)) {
+                $stmt->bindParam(':minPrice', $minPrice);
+            }
+        
+            if (!empty($maxPrice)) {
+                $stmt->bindParam(':maxPrice', $maxPrice);
+            }
+        
+            // Exécutez la requête
             $stmt->execute();
+        
+            // Traitez les résultats comme auparavant
             $HoraireDATA = array();
             $villesDATA = array();
             $AllHoraire = $stmt->fetchAll();
@@ -70,8 +105,10 @@ include_once 'model/searchClass.php';
                 $HoraireDATA[] = new Search($horaire['idHoraire'],$horaire['ville_depart'],$horaire['ville_arrivee'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo'],$horaire['price'],$horaire['company_name'],$horaire['company_image'],$horaire['duree']);
                 $entreprisesDATA[] = new Entreprise(0,$horaire['company_name'],"","");
             }
+        
             return ['HoraireDATA' => $HoraireDATA, 'entreprisesDATA' => $entreprisesDATA];
         }
+        
 
 
         

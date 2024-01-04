@@ -2,7 +2,6 @@
 include_once 'model\horaireDAO.php';
 include_once 'model\busDAO.php';
 include_once 'model\routDAO.php';
-
 class HoraireController{
 
     function getAllHoraires(){
@@ -59,10 +58,15 @@ class HoraireController{
         $vArrivee = $_POST["vArrivee"] ; 
         $date = $_POST["date"] ; 
         $NumCustom = $_POST["NumCustom"] ; 
+
+        $minPrice = isset($_POST["minPrice"]) ? $_POST["minPrice"] : null;
+        $maxPrice = isset($_POST["maxPrice"]) ? $_POST["maxPrice"] : null;
+        $selectedCompanies = isset($_POST["selectedCompanies"]) ? $_POST["selectedCompanies"] : array();
+
         $ville = new VilleDAO();
         $villesDATA = $ville->getAllVilles();
         $horaire = new horaireDAO();
-        $HorairesDATA = $horaire->searchHoraires($vDepart,$vArrivee,$date,$NumCustom);
+        $HorairesDATA = $horaire->searchHoraires($vDepart, $vArrivee, $date, $NumCustom, $minPrice, $maxPrice,$selectedCompanies);
         $horaireDATA = $HorairesDATA['HoraireDATA'];
         $entreprisesDATA = $HorairesDATA['entreprisesDATA'];
         include 'view/homeUser.php';
