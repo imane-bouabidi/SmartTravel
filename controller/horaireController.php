@@ -65,10 +65,9 @@ class HoraireController{
         $HorairesDATA = $horaire->searchHoraires($vDepart,$vArrivee,$date,$NumCustom);
         $horaireDATA = $HorairesDATA['HoraireDATA'];
         $entreprisesDATA = $HorairesDATA['entreprisesDATA'];
-        // $arr = [0, 1, 2, 3];
         include 'view/homeUser.php';
     }
-    
+
     function delete_Horaire(){
         $id = $_GET['id'];
         $horaire = new horaireDAO();
