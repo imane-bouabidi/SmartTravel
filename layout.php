@@ -24,7 +24,6 @@
     include_once 'view/header.php'; 
     echo $content;
     include_once 'view/footer.php'; 
-    
     ?>
 </body>
 

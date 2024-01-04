@@ -9,8 +9,8 @@ include_once 'model/searchClass.php';
             $this->pdo = Database::getInstance()->getConnection(); 
         }
 
-        public function addHoraire($idRoute, $idBus, $date_, $heure_depart, $heure_arrivee, $sieges_dispo){
-            $insert = "INSERT INTO horaire VALUES(0,'$idRoute', '$idBus', '$date_','$heure_depart','$heure_arrivee','$sieges_dispo')";
+        public function addHoraire($idRoute, $idBus, $date_, $heure_depart, $heure_arrivee, $sieges_dispo,$price){
+            $insert = "INSERT INTO horaire VALUES(0,'$idRoute', '$idBus', '$date_','$heure_depart','$heure_arrivee','$sieges_dispo','$price')";
             $stmt = $this->pdo->prepare($insert);
             $stmt->execute();
             header('Location:index.php?action=horaires');
@@ -24,7 +24,7 @@ include_once 'model/searchClass.php';
             $HoraireDATA = array();
             $AllBHoraire = $stmt->fetchAll();
             foreach($AllBHoraire as $horaire){
-                $HoraireDATA[] = new Horaire($horaire['idHoraire'],$horaire['idRout'],$horaire['idBus'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo']);
+                $HoraireDATA[] = new Horaire($horaire['idHoraire'],$horaire['idRout'],$horaire['idBus'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo'],$horaire['price']);
             }
             return $HoraireDATA;
         }
@@ -33,7 +33,7 @@ include_once 'model/searchClass.php';
             $stmt = $this->pdo->prepare($selectAll);
             $stmt->execute();
             $horaire = $stmt->fetch();
-                $HoraireDATA = new Horaire($horaire['idHoraire'],$horaire['idRout'],$horaire['idBus'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo']);
+                $HoraireDATA = new Horaire($horaire['idHoraire'],$horaire['idRout'],$horaire['idBus'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo'],$horaire['price']);
             return $HoraireDATA;
         }
         public function searchHoraires($vDepart, $vArrivee, $date, $sieges, $minPrice, $maxPrice,$selectedCompanies){
@@ -48,6 +48,7 @@ include_once 'model/searchClass.php';
                 horaire.sieges_dispo,
                 horaire.price,
                 entreprise.name AS company_name,
+                entreprise.idEntreprise AS company_idEntreprise,
                 entreprise.image AS company_image,
                 routee.duree
             FROM horaire 
@@ -63,6 +64,7 @@ include_once 'model/searchClass.php';
         
             // Ajoutez les conditions des filtres optionnels
             if (!empty($selectedCompanies)) {
+                echo $selectedCompanies[0];
                 $selectQuery .= " AND entreprise.idEntreprise IN (" . implode(",", $selectedCompanies) . ")";
         }
             if (!empty($minPrice)) {
@@ -93,7 +95,7 @@ include_once 'model/searchClass.php';
             if (!empty($maxPrice)) {
                 $stmt->bindParam(':maxPrice', $maxPrice);
             }
-        
+            // echo $selectQuery;
             // Exécutez la requête
             $stmt->execute();
         
@@ -103,7 +105,7 @@ include_once 'model/searchClass.php';
             $AllHoraire = $stmt->fetchAll();
             foreach($AllHoraire as $horaire){
                 $HoraireDATA[] = new Search($horaire['idHoraire'],$horaire['ville_depart'],$horaire['ville_arrivee'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo'],$horaire['price'],$horaire['company_name'],$horaire['company_image'],$horaire['duree']);
-                $entreprisesDATA[] = new Entreprise(0,$horaire['company_name'],"","");
+                $entreprisesDATA[] = new Entreprise($horaire['company_idEntreprise'],$horaire['company_name'],"","");
             }
         
             return ['HoraireDATA' => $HoraireDATA, 'entreprisesDATA' => $entreprisesDATA];

@@ -8,9 +8,10 @@ class Horaire {
     private $heure_depart;
     private $heure_arrivee;
     private $sieges_dispo;
+    private $price;
 
     // Constructor
-    public function __construct($idHoraire, $idRoute, $idBus, $date_, $heure_depart, $heure_arrivee, $sieges_dispo) {
+    public function __construct($idHoraire, $idRoute, $idBus, $date_, $heure_depart, $heure_arrivee, $sieges_dispo,$price) {
         $this->idHoraire = $idHoraire;
         $this->idRoute = $idRoute;
         $this->idBus = $idBus;
@@ -18,6 +19,7 @@ class Horaire {
         $this->heure_depart = $heure_depart;
         $this->heure_arrivee = $heure_arrivee;
         $this->sieges_dispo = $sieges_dispo;
+        $this->price = $price;
     }
 
     // Getter and Setter methods for each property
@@ -76,6 +78,11 @@ class Horaire {
 
     public function setSiegesDispo($sieges_dispo) {
         $this->sieges_dispo = $sieges_dispo;
+    }
+
+    public function getPrice()
+    {
+        return $this->price;
     }
 }
 
