@@ -21,7 +21,11 @@
 
 <body>
     <?php 
-    include_once 'view/header.php'; 
+    //     require_once 'view/header.php'; 
+    // if (empty($_SESSION['headerIncluded'])) {
+        require_once 'view/header.php'; 
+    //     $_SESSION['headerIncluded'] = true;
+    // }
     echo $content;
     include_once 'view/footer.php'; 
     ?>

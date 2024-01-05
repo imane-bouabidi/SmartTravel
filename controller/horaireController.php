@@ -75,11 +75,11 @@ class HoraireController
         $minPrice = isset($_POST["minPrice"]) ? $_POST["minPrice"] : null;
         $maxPrice = isset($_POST["maxPrice"]) ? $_POST["maxPrice"] : null;
         $selectedCompanies = isset($_POST["selectedCompanies"]) ? $_POST["selectedCompanies"] : array();
-
+        $selectedTimes = isset($_POST["selectedTimes"]) ? $_POST["selectedTimes"] : array();
         $ville = new VilleDAO();
         $villesDATA = $ville->getAllVilles();
         $horaire = new horaireDAO();
-        $HorairesDATA = $horaire->searchHoraires($vDepart, $vArrivee, $date, $NumCustom, $minPrice, $maxPrice, $selectedCompanies);
+        $HorairesDATA = $horaire->searchHoraires($vDepart, $vArrivee, $date, $NumCustom, $minPrice, $maxPrice, $selectedCompanies, $selectedTimes);
         $horaireDATA = $HorairesDATA['HoraireDATA'];
         $entreprisesDATA = $HorairesDATA['entreprisesDATA'];
         include_once 'view/homeUser.php';
@@ -88,9 +88,7 @@ class HoraireController
 
     function filtreHoraire()
     {
-        // session_start(); 
 
-        // Récupérez les valeurs des filtres depuis la session s'ils existent
         $vDepart = isset($_SESSION["vDepart"]) ? $_SESSION["vDepart"] : null;
         $vArrivee = isset($_SESSION["vArrivee"]) ? $_SESSION["vArrivee"] : null;
         $date = isset($_SESSION["date"]) ? $_SESSION["date"] : null;
@@ -99,25 +97,15 @@ class HoraireController
         $minPrice = isset($_POST["minPrice"]) ? $_POST["minPrice"] : null;
         $maxPrice = isset($_POST["maxPrice"]) ? $_POST["maxPrice"] : null;
         $selectedCompanies = isset($_POST["selectedCompanies"]) ? $_POST["selectedCompanies"] : array();
-        // print_r($selectedCompanies); 
+        $selectedTimes = isset($_POST["selectedTimes"]) ? $_POST["selectedTimes"] : array();
         $ville = new VilleDAO();
         $villesDATA = $ville->getAllVilles();
         $horaire = new horaireDAO();
 
-        $HorairesDATA = $horaire->searchHoraires($vDepart, $vArrivee, $date, $NumCustom, $minPrice, $maxPrice, $selectedCompanies);
+        $HorairesDATA = $horaire->searchHoraires($vDepart, $vArrivee, $date, $NumCustom, $minPrice, $maxPrice, $selectedCompanies, $selectedTimes);
         $horaireDATA = $HorairesDATA['HoraireDATA'];
         $entreprisesDATA = $HorairesDATA['entreprisesDATA'];
-        // foreach($entreprisesDATA as $entreprise){
-        //     echo $entreprise->getIdEntreprise();
-        // }
-        echo json_encode(
-            [
-                
-            ]
-        );
-
-
-        include_once 'view/homeUser.php';
+        include_once 'view/filtragePage.php';
     }
 
 

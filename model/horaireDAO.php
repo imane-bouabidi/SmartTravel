@@ -36,8 +36,7 @@ include_once 'model/searchClass.php';
                 $HoraireDATA = new Horaire($horaire['idHoraire'],$horaire['idRout'],$horaire['idBus'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo'],$horaire['price']);
             return $HoraireDATA;
         }
-        public function searchHoraires($vDepart, $vArrivee, $date, $sieges, $minPrice, $maxPrice,$selectedCompanies){
-            // Construisez la requête SQL en fonction des filtres fournis
+        public function searchHoraires($vDepart, $vArrivee, $date, $sieges, $minPrice, $maxPrice,$selectedCompanies, $selectedTimes){
             $selectQuery = "SELECT 
                 horaire.idHoraire,
                 ville.ville_name AS ville_depart,
@@ -62,9 +61,7 @@ include_once 'model/searchClass.php';
                 AND horaire.date_ >= :date
                 AND horaire.sieges_dispo >= :sieges";
         
-            // Ajoutez les conditions des filtres optionnels
             if (!empty($selectedCompanies)) {
-                echo $selectedCompanies[0];
                 $selectQuery .= " AND entreprise.idEntreprise IN (" . implode(",", $selectedCompanies) . ")";
         }
             if (!empty($minPrice)) {
@@ -74,20 +71,33 @@ include_once 'model/searchClass.php';
             if (!empty($maxPrice)) {
                 $selectQuery .= " AND horaire.price <= :maxPrice";
             }
+
+            if (!empty($selectedTimes)) {
+                foreach ($selectedTimes as $selectedTime) {
+                    switch ($selectedTime) {
+                        case 'matin':
+                            $selectQuery .= " AND TIME(horaire.heur_depart) <= '12:00:00'";
+                            break;
+                        case 'midi':
+                            $selectQuery .= " AND TIME(horaire.heur_depart) > '12:00:00' AND TIME(horaire.heur_depart) <= '17:00:00'";
+                            break;
+                        case 'soir':
+                            $selectQuery .= " AND TIME(horaire.heur_depart) > '17:00:00'";
+                            break;
+                    }
+                }
+            }
+
         
-            // Groupez par ID pour éviter les doublons
-            // $selectQuery .= " GROUP BY horaire.idHoraire";
+            $selectQuery .= " GROUP BY horaire.idHoraire";
         
-            // Préparez la requête
             $stmt = $this->pdo->prepare($selectQuery);
         
-            // Liez les paramètres
             $stmt->bindParam(':vDepart', $vDepart);
             $stmt->bindParam(':vArrivee', $vArrivee);
             $stmt->bindParam(':date', $date);
             $stmt->bindParam(':sieges', $sieges);
         
-            // Liez les paramètres des filtres optionnels
             if (!empty($minPrice)) {
                 $stmt->bindParam(':minPrice', $minPrice);
             }
@@ -95,11 +105,9 @@ include_once 'model/searchClass.php';
             if (!empty($maxPrice)) {
                 $stmt->bindParam(':maxPrice', $maxPrice);
             }
-            // echo $selectQuery;
-            // Exécutez la requête
+
             $stmt->execute();
         
-            // Traitez les résultats comme auparavant
             $HoraireDATA = array();
             $villesDATA = array();
             $AllHoraire = $stmt->fetchAll();
