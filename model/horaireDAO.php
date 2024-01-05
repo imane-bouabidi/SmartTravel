@@ -74,14 +74,11 @@ include_once 'model/searchClass.php';
 
             if (!empty($selectedTimes)) {
                 foreach ($selectedTimes as $selectedTime) {
-                    switch ($selectedTime) {
-                        case 'matin':
+                    if ($selectedTime == 'matin') {
                             $selectQuery .= " AND TIME(horaire.heur_depart) <= '12:00:00'";
-                            break;
-                        case 'midi':
+                    }else if ($selectedTime == 'midi') {
                             $selectQuery .= " AND TIME(horaire.heur_depart) > '12:00:00' AND TIME(horaire.heur_depart) <= '17:00:00'";
-                            break;
-                        case 'soir':
+                    }else if ($selectedTime == 'soir') {
                             $selectQuery .= " AND TIME(horaire.heur_depart) > '17:00:00'";
                             break;
                     }
@@ -109,6 +106,7 @@ include_once 'model/searchClass.php';
             $stmt->execute();
         
             $HoraireDATA = array();
+            $entreprisesDATA = array();
             $villesDATA = array();
             $AllHoraire = $stmt->fetchAll();
             foreach($AllHoraire as $horaire){

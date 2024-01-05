@@ -88,15 +88,15 @@ ob_start();
                     <p class="h5">Heure de départ</p>
                     <ul class="d-flex flex-column" id="time_filter" name="time_filter">
                         <li class="mt-3">
-                            <input type="checkbox" class="form-check-input time" name="" id="matin">
+                            <input type="checkbox" class="form-check-input time" value="matin" name="" id="matin">
                             <label class="form-check-label" for="matin">Matin (0h - 12h)</label>
                         </li>
                         <li class="mt-3">
-                            <input type="checkbox" class="form-check-input time" name="" id="midi">
+                            <input type="checkbox" class="form-check-input time" value="midi" name="" id="midi">
                             <label class="form-check-label" for="midi">Après-midi (12h - 17h)</label>
                         </li>
                         <li class="mt-3">
-                            <input type="checkbox" class="form-check-input time" name="" id="soir">
+                            <input type="checkbox" class="form-check-input time" value="soir" name="" id="soir">
                             <label class="form-check-label" for="soir">Soir (17h - 0h)</label>
                         </li>
                     </ul>
