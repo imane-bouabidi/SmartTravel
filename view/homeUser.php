@@ -4,7 +4,7 @@ ob_start();
 
 <div id="lkjlh">
     <header id="header">
-        <img class="mt-5" src="assets/imgs/header-illustration-2.png" alt="travel" width="650">
+        <img class="mt-5 vw-100" src="assets/imgs/HeroRDC.svg" alt="travel" width="650">
     </header>
 
 
@@ -17,8 +17,8 @@ ob_start();
                     <label for="validationCustom02" class="form-label">Departure city</label>
                     <select name="vDepart" class="form-control" data-mdb-select-init data-mdb-filter="true">
                         <?php foreach ($villesDATA as $ville) { ?>
-                        <option value="<?= $ville->getIdVille(); ?>"
-                            <?= ($ville->getIdVille() == $_POST["vDepart"]) ? 'selected' : ''; ?>>
+                          <option value="<?= $ville->getIdVille(); ?>"
+                          <?= (isset($_POST["vDepart"]) && $ville->getIdVille() == $_POST["vDepart"]) ? 'selected' : ''; ?>>
                             <?php echo $ville->getVille_name(); ?>
                         </option>
                         <?php } ?>
@@ -31,7 +31,7 @@ ob_start();
                     <select name="vArrivee" class="form-control" data-mdb-select-init data-mdb-filter="true">
                         <?php foreach ($villesDATA as $ville) { ?>
                         <option value="<?= $ville->getIdVille(); ?>"
-                            <?= ($ville->getIdVille() == $_POST["vArrivee"]) ? 'selected' : ''; ?>>
+                        <?= (isset($_POST["vArrivee"]) && $ville->getIdVille() == $_POST["vArrivee"]) ? 'selected' : ''; ?>>
                             <?php echo $ville->getVille_name(); ?>
                         </option>
                         <?php } ?>
@@ -262,8 +262,6 @@ ob_start();
                 <?php endforeach; ?>
             </div>
         </div>
-        <?php else : ?>
-        <p class="text-gray-600">Aucun résultat trouvé pour la recherche.</p>
         <?php endif; ?>
     </div>
     <?php

@@ -111,8 +111,11 @@ include_once 'model/searchClass.php';
             $AllHoraire = $stmt->fetchAll();
             foreach($AllHoraire as $horaire){
                 $HoraireDATA[] = new Search($horaire['idHoraire'],$horaire['ville_depart'],$horaire['ville_arrivee'],$horaire['date_'],$horaire['heur_depart'],$horaire['heur_arrivee'],$horaire['sieges_dispo'],$horaire['price'],$horaire['company_name'],$horaire['company_image'],$horaire['duree']);
-                $entreprisesDATA[] = new Entreprise($horaire['company_idEntreprise'],$horaire['company_name'],"","");
-            }
+                $companyId = $horaire['company_idEntreprise'];
+                if (!isset($entreprisesAlreadyAdded[$companyId])) {
+                    $entreprisesAlreadyAdded[$companyId] = true;
+                    $entreprisesDATA[] = new Entreprise($companyId, $horaire['company_name'], "", "");
+                }            }
         
             return ['HoraireDATA' => $HoraireDATA, 'entreprisesDATA' => $entreprisesDATA];
         }
