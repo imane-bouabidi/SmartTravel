@@ -22,7 +22,7 @@ class HoraireController
         $sieges_dispo = $_POST["sieges_dispo"];
         $price = $_POST["price"];
         $horaires = new horaireDAO();
-        $horairesDATA = $horaires->addHoraire($idRout, $idBus, $date_, $heur_depart, $heur_arrivee, $sieges_dispo, $price);
+        $horaires->addHoraire($idRout, $idBus, $date_, $heur_depart, $heur_arrivee, $sieges_dispo, $price);
         include('view/addHoraire.php');
     }
 
@@ -57,7 +57,7 @@ class HoraireController
         $heur_arrivee = $_POST["heur_arrivee"];
         $sieges_dispo = $_POST["sieges_dispo"];
         $horaire = new horaireDAO();
-        $horaireDATA = $horaire->UpdateHoraire($id, $idRout, $idBus, $date_, $heur_depart, $heur_arrivee, $sieges_dispo);
+        $horaire->UpdateHoraire($id, $idRout, $idBus, $date_, $heur_depart, $heur_arrivee, $sieges_dispo);
         include 'view/updateRoute.php';
     }
     function searchHoraire()
