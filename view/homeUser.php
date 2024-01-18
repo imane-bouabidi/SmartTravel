@@ -302,7 +302,7 @@ function updateResults(minPrice, maxPrice, selectedCompanies, selectedTimes) {
             minPrice: minPrice,
             maxPrice: maxPrice,
             selectedCompanies: selectedCompanies,
-            selectedTimes: selectedTimes, // Ajout de cette ligne
+            selectedTimes: selectedTimes,
             vDepart: $('#vDepart').val(),
             vArrivee: $('#vArrivee').val(),
             date: $('#date').val(),
